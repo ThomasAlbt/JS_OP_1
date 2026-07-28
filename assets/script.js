@@ -22,28 +22,87 @@ let highlightedDot = 0;
 const arrowLeft = document.getElementById('arrow_left');
 const arrowRight = document.getElementById('arrow_right');
 
-// Dots
-
 const dotsContainer = document.getElementsByClassName('dots')[0];
 
-const selectedDot = (number = 0) => {
-	dotsContainer.getElementsByClassName('dot')[number].classList.add('dot_selected');
-	highlightedDot = number;
+const pictures = document.getElementsByClassName('banner-img')[0];
+
+const text = document.getElementById('banner').getElementsByTagName('p')[0];
+
+const counter = (number = 0, operation) => {
+	let totalSlides = slides.length
+
+	switch(operation){
+		case("minus"):
+			dotsContainer.getElementsByClassName('dot')[number].classList.remove('dot_selected');
+			if (number == 0) {
+				photoChanger(totalSlides -1);
+				textChanger(totalSlides - 1);
+				dotHighlighter(totalSlides - 1);
+				highlightedDot = totalSlides - 1;
+			} else {
+				photoChanger(highlightedDot -1);
+				textChanger(highlightedDot - 1);
+				dotHighlighter(highlightedDot - 1);
+				highlightedDot -= 1;
+			}
+			break;
+		case("plus"):
+			dotsContainer.getElementsByClassName('dot')[number].classList.remove('dot_selected');
+			if (number == totalSlides - 1) {
+				photoChanger(0);
+				textChanger(0);
+				dotHighlighter(0);
+				highlightedDot = 0;
+			} else {
+				photoChanger(highlightedDot + 1);
+				textChanger(highlightedDot + 1);
+				dotHighlighter(highlightedDot + 1);
+				highlightedDot += 1;
+			}
+			break;
+	}
 };
+
+
+const dotHighlighter = (counter = 0) => {
+	dotsContainer.getElementsByClassName('dot')[counter].classList.add('dot_selected');
+}
+
+const photoChanger = (counter = 0) => {
+	pictures.src=`./assets/images/slideshow/${slides[counter].image}`;
+}
+
+const textChanger = (counter = 0) => {
+	console.log(counter)
+	text.innerHTML = slides[counter].tagLine
+}
+
 
 slides.forEach(() => {
 	const dot = document.createElement("div");
 	dot.classList.add("dot");
 	dotsContainer.appendChild(dot);
-	selectedDot()
+	dotHighlighter();
 });
 
 arrowLeft.addEventListener('click', () => {
-	dotsContainer.getElementsByClassName('dot')[highlightedDot].classList.remove('dot_selected');
-	highlightedDot === 0 ? selectedDot(slides.length - 1) : selectedDot(highlightedDot - 1)
+	counter(highlightedDot, "minus");
 });
 
 arrowRight.addEventListener('click', () => {
-	dotsContainer.getElementsByClassName('dot')[highlightedDot].classList.remove('dot_selected');
-	highlightedDot == slides.length - 1 ? selectedDot(0) : selectedDot(highlightedDot + 1)
+	counter(highlightedDot, "plus");
 });
+
+// if too complicated put everything in those event listeners
+
+// arrowLeft.addEventListener('click', () => {
+// 	dotsContainer.getElementsByClassName('dot')[highlightedDot].classList.remove('dot_selected');
+// 	highlightedDot == 0 ? highlightedDot = slides.length - 1 : highlightedDot -= 1;
+// 	dotSelector(highlightedDot)
+// });
+
+// arrowRight.addEventListener('click', () => {
+// 	dotsContainer.getElementsByClassName('dot')[highlightedDot].classList.remove('dot_selected');
+// 	highlightedDot == slides.length - 1 ? highlightedDot = 0 : highlightedDot += 1;
+// 	dotSelector(highlightedDot)
+// });
