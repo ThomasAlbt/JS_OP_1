@@ -17,7 +17,7 @@ const slides = [
 	}
 ]
 
-let highlightedDot;
+let highlightedDot = 0;
 
 const arrowLeft = document.getElementById('arrow_left');
 const arrowRight = document.getElementById('arrow_right');
@@ -26,21 +26,24 @@ const arrowRight = document.getElementById('arrow_right');
 
 const dotsContainer = document.getElementsByClassName('dots')[0];
 
+const selectedDot = (number = 0) => {
+	dotsContainer.getElementsByClassName('dot')[number].classList.add('dot_selected');
+	highlightedDot = number;
+};
+
 slides.forEach(() => {
 	const dot = document.createElement("div");
 	dot.classList.add("dot");
 	dotsContainer.appendChild(dot);
+	selectedDot()
 });
 
-const selectedDot = (number = 0) => {
-	dotsContainer.getElementsByClassName('dot')[number].classList.add('dot_selected');
-};
-
-
 arrowLeft.addEventListener('click', () => {
-	highlightedDot === 0 ? selectedDot(slides.length) : selectedDot(highlightedDot - 1)
+	dotsContainer.getElementsByClassName('dot')[highlightedDot].classList.remove('dot_selected');
+	highlightedDot === 0 ? selectedDot(slides.length - 1) : selectedDot(highlightedDot - 1)
 });
 
 arrowRight.addEventListener('click', () => {
-	console.log('testouille de droite');
+	dotsContainer.getElementsByClassName('dot')[highlightedDot].classList.remove('dot_selected');
+	highlightedDot == slides.length - 1 ? selectedDot(0) : selectedDot(highlightedDot + 1)
 });
