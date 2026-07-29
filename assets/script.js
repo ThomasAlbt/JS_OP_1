@@ -28,11 +28,14 @@ const pictures = document.getElementsByClassName('banner-img')[0];
 
 const text = document.getElementById('banner').getElementsByTagName('p')[0];
 
+
+
 const counter = (number = 0, operation) => {
 	let totalSlides = slides.length
 
 	switch(operation){
 		case("minus"):
+			// delete previous highlighted dot
 			dotsContainer.getElementsByClassName('dot')[number].classList.remove('dot_selected');
 			if (number == 0) {
 				photoChanger(totalSlides -1);
@@ -47,6 +50,7 @@ const counter = (number = 0, operation) => {
 			}
 			break;
 		case("plus"):
+			// delete previous highlighted dot
 			dotsContainer.getElementsByClassName('dot')[number].classList.remove('dot_selected');
 			if (number == totalSlides - 1) {
 				photoChanger(0);
@@ -65,19 +69,23 @@ const counter = (number = 0, operation) => {
 
 
 const dotHighlighter = (counter = 0) => {
+	//  add the dot_slected class to the dot corresponding to int counter
 	dotsContainer.getElementsByClassName('dot')[counter].classList.add('dot_selected');
 }
 
 const photoChanger = (counter = 0) => {
+	// change the source of the img to the one corresponding to the int counter
+	// the name of the file comes from the slide array
 	pictures.src=`./assets/images/slideshow/${slides[counter].image}`;
 }
 
 const textChanger = (counter = 0) => {
 	console.log(counter)
+	// change the inside of the p to the corresponding tagLine from the slides array
 	text.innerHTML = slides[counter].tagLine
 }
 
-
+// creation of the dots at the start of the page
 slides.forEach(() => {
 	const dot = document.createElement("div");
 	dot.classList.add("dot");
@@ -85,6 +93,7 @@ slides.forEach(() => {
 	dotHighlighter();
 });
 
+// events listener for both the arrow calling the counter function on click
 arrowLeft.addEventListener('click', () => {
 	counter(highlightedDot, "minus");
 });
